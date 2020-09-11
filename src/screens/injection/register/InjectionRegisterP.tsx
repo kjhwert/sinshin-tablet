@@ -73,14 +73,12 @@ export default ({navigation, state, setState}) => {
           </BoxWrapper>
         </ScrollWrapper>
       </ScrollContainer>
-      <BtnWrapper>
-        <RegisterBtn
-          onPress={() => {
-            navigation.navigate('main');
-          }}>
-          <RegisterBtnText>공정완료</RegisterBtnText>
-        </RegisterBtn>
-      </BtnWrapper>
+      <RegisterBtn
+        onPress={() => {
+          navigation.navigate('main');
+        }}>
+        <RegisterBtnText>공정완료</RegisterBtnText>
+      </RegisterBtn>
     </Container>
   );
 };
@@ -210,18 +208,13 @@ const Input = styled.TextInput`
 `;
 
 // 공정완료 버튼
-const BtnWrapper = styled.View`
-  width: 100%;
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-`;
-
 const RegisterBtn = styled.TouchableOpacity`
   width: 100%;
   background-color: #28afd0;
   border-radius: 5px;
   padding: 15px;
+  margin-top: 20px;
+  display: flex;
   align-items: center;
 `;
 

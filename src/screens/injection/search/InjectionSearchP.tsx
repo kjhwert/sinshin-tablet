@@ -11,7 +11,7 @@ export default ({navigation}) => {
         <Input placeholder="제품명 (검색)" />
         <SearchBtn
           onPress={() => {
-            navigation.navigate('#');
+            navigation.navigate('');
           }}>
           <SrchBtnText>검색</SrchBtnText>
         </SearchBtn>

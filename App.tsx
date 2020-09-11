@@ -1,12 +1,15 @@
 import React from 'react';
 import LoginStack from './src/navigation/LoginStack';
-import { NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
+import {UserContextProvider} from './src/modules/UserContext';
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <LoginStack />
-    </NavigationContainer>
+    <UserContextProvider>
+      <NavigationContainer>
+        <LoginStack />
+      </NavigationContainer>
+    </UserContextProvider>
   );
 };
 
