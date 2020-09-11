@@ -4,6 +4,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 type RootStackParamList = {
   login: undefined;
   main: undefined;
+  drawer: undefined;
   injection: undefined;
   injectionRegister: undefined;
 };

@@ -33,7 +33,7 @@ export default ({navigation}) => {
                 onPress={() => {
                   navigation.navigate('register');
                 }}>
-                <ChoicelBtnText>버튼</ChoicelBtnText>
+                <ChoicelBtnText>선택</ChoicelBtnText>
               </ChoicelBtn>
             </TableData>
           </TableDataWrapper>

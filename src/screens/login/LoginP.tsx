@@ -1,7 +1,14 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import {ILogin} from '../../components/types/user';
 
-export default ({navigation}) => {
+interface IProps {
+  login: Function;
+  state: ILogin;
+  setState: Function;
+}
+
+export default ({login, state, setState}: IProps) => {
   return (
     <Container>
       <Wrapper>
@@ -9,12 +16,24 @@ export default ({navigation}) => {
           source={require('../../assets/loginLogo.png')}
           resizeMode="contain"
         />
-        <Input placeholder="id" />
-        <Input placeholder="password" />
-        <LoginBtn
-          onPress={() => {
-            navigation.navigate('main');
-          }}>
+        <Input
+          placeholder="id"
+          value={state.user_id}
+          autoCapitalize="none"
+          onChangeText={(text: string) => {
+            setState({...state, user_id: text});
+          }}
+        />
+        <Input
+          placeholder="password"
+          value={state.user_pw}
+          autoCapitalize="none"
+          secureTextEntry={true}
+          onChangeText={(text: string) => {
+            setState({...state, user_pw: text});
+          }}
+        />
+        <LoginBtn onPress={login}>
           <LoginBtnText>LOGIN</LoginBtnText>
         </LoginBtn>
       </Wrapper>
