@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import Loading from '../../../components/Loading';
-import InjectionRegisterP from './InjectionRegisterP';
+import PaintingRegisterP from './PaintingRegisterP';
 import {INavigation} from '../../../components/types/navigation';
 import {masterApi} from '../../../components/api';
 import UserContext from '../../../modules/UserContext';
@@ -70,7 +70,7 @@ export default (props: IProps) => {
   return loading || !state ? (
     <Loading />
   ) : (
-    <InjectionRegisterP
+    <PaintingRegisterP
       {...props}
       state={state}
       plusQty={plusQty}

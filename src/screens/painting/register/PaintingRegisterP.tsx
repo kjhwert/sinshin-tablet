@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {INavigation} from '../../../components/types/navigation';
 import {IDefect} from '../../../components/types/defect';
+import KeepAwake from '@sayem314/react-native-keep-awake';
 
 interface IProps {
   navigation: INavigation;
@@ -19,34 +20,23 @@ export default ({
   minusQty,
   changeQty,
   registerFinish,
-  route: {params},
 }: IProps) => {
-  console.log(params);
   return (
     <Container>
+      <KeepAwake />
       <ScrollContainer>
         <ScrollWrapper>
-          <Card>
-            <NaviText>{'사출 > 불량품 등록'}</NaviText>
+          <Card paddingBottom={40}>
+            <NaviText>{'도장 > 불량품 등록'}</NaviText>
             <TitleWrapper>
               <BoldText>수주번호</BoldText>
-              <Data>{params.order_no}</Data>
-            </TitleWrapper>
-            <TitleWrapper>
-              <BoldText>
-                원{'\t'}자{'\t'}재
-              </BoldText>
-              <Data>{`${params.material_name} / ${params.qty}${params.unit}`}</Data>
+              <Data>4502645072</Data>
             </TitleWrapper>
             <TitleWrapper>
               <BoldText>
                 제{'\t'}품{'\t'}명
               </BoldText>
-              <Data>{params.product_name}</Data>
-            </TitleWrapper>
-            <TitleWrapper>
-              <BoldText>설비번호</BoldText>
-              <Data>{params.asset_no}</Data>
+              <Data>후 진율 밸런서/로션(18G) 150/110ml 캡 외캡</Data>
             </TitleWrapper>
           </Card>
           <Card marginTop={20}>
@@ -110,6 +100,8 @@ const Card = styled.View`
   background-color: #fff;
   padding: 20px;
   margin-top: ${({marginTop}) => (marginTop ? marginTop : 0)}px;
+  padding-bottom: ${({paddingBottom}) =>
+    paddingBottom ? paddingBottom : 20}px;
   border-radius: 5px;
 `;
 

@@ -104,8 +104,8 @@ const LogoutWrapper = styled.View`
 `;
 
 const LogoutImage = styled.Image`
-  width: 15px;
-  height: 15px;
+  width: 30px;
+  height: 30px;
   margin-right: 10px;
 `;
 
@@ -117,12 +117,13 @@ const HomeWrapper = styled.View`
 `;
 
 const HomeImage = styled.Image`
-  width: 15px;
-  height: 15px;
+  width: 30px;
+  height: 30px;
   margin-right: 10px;
 `;
 
 const NText = styled.Text`
   color: #999999;
   font-weight: 500;
+  font-size: 18px;
 `;

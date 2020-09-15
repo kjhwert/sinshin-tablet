@@ -1,81 +1,50 @@
 import React from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
-import Loading from '../../../components/Loading';
+import KeepAwake from '@sayem314/react-native-keep-awake';
 import {INavigation} from '../../../components/types/navigation';
 
 interface IProps {
   navigation: INavigation;
 }
 
-export default ({
-  navigation,
-  state,
-  setState,
-  getList,
-  setOrderNo,
-  setProductName,
-  process,
-  loading,
-}: IProps) => {
+export default ({navigation}: IProps) => {
   return (
     <Container>
+      <KeepAwake />
       <Card>
-        <NaviText>{'사출 > 작업정보 검색'}</NaviText>
-        <Input
-          placeholder="수주번호 (검색)"
-          value={state.order_no}
-          onChangeText={(text) => {
-            setOrderNo(text);
-          }}
-        />
-        <Input
-          placeholder="제품명 (검색)"
-          value={state.product_name}
-          onChangeText={(text) => {
-            setProductName(text);
-          }}
-        />
+        <NaviText>{'도장 > 작업정보 검색'}</NaviText>
+        <Input placeholder="수주번호 (검색)" />
+        <Input placeholder="제품명 (검색)" />
         <SearchBtn
           onPress={() => {
-            getList();
+            navigation.navigate('');
           }}>
           <SrchBtnText>검색</SrchBtnText>
         </SearchBtn>
       </Card>
-      {loading ? (
-        <Loading />
-      ) : (
-        <Card marginTop={30}>
-          <ScrollView>
-            <TableContainer>
-              <TableTitleWrapper>
-                <AssetNameHeader>설비번호</AssetNameHeader>
-                <OrderNumHeader>수주번호</OrderNumHeader>
-                <ProductNameHeader>제품명</ProductNameHeader>
-                <ChoiceBtnHeader>선택버튼</ChoiceBtnHeader>
-              </TableTitleWrapper>
-              <TableDataWrapper>
-                {process.map((item) => (
-                  <TableData key={item.id}>
-                    <TableDataAssetName>{item.asset_no}</TableDataAssetName>
-                    <TableDataOrderNum>{item.order_no}</TableDataOrderNum>
-                    <TableDataProductName>
-                      {item.product_name}
-                    </TableDataProductName>
-                    <ChoicelBtn
-                      onPress={() => {
-                        navigation.navigate('injectionRegister', item);
-                      }}>
-                      <ChoicelBtnText>선택</ChoicelBtnText>
-                    </ChoicelBtn>
-                  </TableData>
-                ))}
-              </TableDataWrapper>
-            </TableContainer>
-          </ScrollView>
-        </Card>
-      )}
+      <Card marginTop={30}>
+        <TableContainer>
+          <TableTitleWrapper>
+            <AssetNameHeader>설비번호</AssetNameHeader>
+            <OrderNumHeader>수주번호</OrderNumHeader>
+            <ProductNameHeader>제품명</ProductNameHeader>
+            <ChoiceBtnHeader>선택버튼</ChoiceBtnHeader>
+          </TableTitleWrapper>
+          <TableDataWrapper>
+            <TableData>
+              <TableDataAssetName />
+              <TableDataOrderNum />
+              <TableDataProductName />
+              <ChoicelBtn
+                onPress={() => {
+                  navigation.navigate('paintingRegister');
+                }}>
+                <ChoicelBtnText>선택</ChoicelBtnText>
+              </ChoicelBtn>
+            </TableData>
+          </TableDataWrapper>
+        </TableContainer>
+      </Card>
     </Container>
   );
 };
