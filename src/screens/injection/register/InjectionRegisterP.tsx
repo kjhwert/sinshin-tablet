@@ -1,32 +1,45 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import {INavigation} from '../../../components/types/navigation';
+import {IDefect} from '../../../components/types/defect';
+import KeepAwake from '@sayem314/react-native-keep-awake';
 
-export default ({navigation, state, setState}) => {
+interface IProps {
+  navigation: INavigation;
+  state: Array<IDefect>;
+  plusQty: Function;
+  minusQty: Function;
+  changeQty: Function;
+  registerFinish: Function;
+}
+
+export default ({navigation, state, plusQty, minusQty, changeQty, registerFinish}: IProps) => {
   return (
     <Container>
+      <KeepAwake />
       <ScrollContainer>
         <ScrollWrapper>
           <Card>
             <NaviText>{'사출 > 불량품 등록'}</NaviText>
             <TitleWrapper>
               <BoldText>수주번호</BoldText>
-              <Data>123456789</Data>
+              <Data>4502645072</Data>
             </TitleWrapper>
             <TitleWrapper>
               <BoldText>
                 원{'\t'}자{'\t'}재
               </BoldText>
-              <Data>PN200 (R-IN-009) / 25kg</Data>
+              <Data>ABS121HA-NP (R-IN-004) / 25kg</Data>
             </TitleWrapper>
             <TitleWrapper>
               <BoldText>
                 제{'\t'}품{'\t'}명
               </BoldText>
-              <Data>후천기단화현아이/크림캡 25ML 명판</Data>
+              <Data>후 진율 밸런서/로션(18G) 150/110ml 캡 외캡</Data>
             </TitleWrapper>
             <TitleWrapper>
               <BoldText>설비번호</BoldText>
-              <Data>27</Data>
+              <Data>25</Data>
             </TitleWrapper>
           </Card>
           <Card marginTop={20}>
@@ -37,45 +50,37 @@ export default ({navigation, state, setState}) => {
             </WarningText>
           </Card>
           <BoxWrapper>
-            {['GAS', '기포', '흑점', '미성형', '기름', '기타'].map(
-              (DefectType, idx) => (
-                <DefectWrapper key={idx}>
-                  <DefectBtn
+            {state.map((item: IDefect) => (
+              <DefectWrapper key={item.id}>
+                <DefectBtn
+                  onPress={() => {
+                    plusQty(item);
+                  }}>
+                  <DefectBtnText>{item.name}</DefectBtnText>
+                </DefectBtn>
+                <CounterBtnWrapper>
+                  <CounterBtn
                     onPress={() => {
-                      console.log(state);
-                      setState(state + 1);
+                      minusQty(item);
                     }}>
-                    <DefectBtnText>{DefectType}</DefectBtnText>
-                  </DefectBtn>
-                  <CounterBtnWrapper>
-                    <CounterBtn
-                      onPress={() => {
-                        setState(state - 1);
-                      }}>
-                      <CounterBtnText>-</CounterBtnText>
-                    </CounterBtn>
-                    <Input
-                      placeholder="수량을 입력해주세요"
-                      keyboardType="numeric"
-                      value={state}
-                      onChangeText={(text) => setState(parseInt(text))}
-                    />
-                    <CounterBtn
-                      onPress={() => {
-                        setState(state + 1);
-                      }}>
-                      <CounterBtnText>+</CounterBtnText>
-                    </CounterBtn>
-                  </CounterBtnWrapper>
-                </DefectWrapper>
-              ),
-            )}
+                    <CounterBtnText>-</CounterBtnText>
+                  </CounterBtn>
+                  <Input>{item.qty}</Input>
+                  <CounterBtn
+                    onPress={() => {
+                      plusQty(item);
+                    }}>
+                    <CounterBtnText>+</CounterBtnText>
+                  </CounterBtn>
+                </CounterBtnWrapper>
+              </DefectWrapper>
+            ))}
           </BoxWrapper>
         </ScrollWrapper>
       </ScrollContainer>
       <RegisterBtn
         onPress={() => {
-          navigation.navigate('main');
+          registerFinish();
         }}>
         <RegisterBtnText>공정완료</RegisterBtnText>
       </RegisterBtn>
@@ -187,7 +192,7 @@ const CounterBtn = styled.TouchableOpacity`
   border-radius: 5px;
   align-items: center;
   display: flex;
-  padding: 5px 15px;
+  padding: 5px 20px;
 `;
 
 const CounterBtnText = styled.Text`
@@ -196,7 +201,7 @@ const CounterBtnText = styled.Text`
   font-weight: bold;
 `;
 
-const Input = styled.TextInput`
+const Input = styled.Text`
   width: 65%;
   padding: 10px;
   margin: 5px;

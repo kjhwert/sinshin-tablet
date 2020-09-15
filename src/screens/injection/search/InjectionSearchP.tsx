@@ -1,9 +1,16 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import KeepAwake from '@sayem314/react-native-keep-awake';
+import {INavigation} from '../../../components/types/navigation';
 
-export default ({navigation}) => {
+interface IProps {
+  navigation: INavigation;
+}
+
+export default ({navigation}: IProps) => {
   return (
     <Container>
+      <KeepAwake />
       <Card>
         <NaviText>{'사출 > 작업정보 검색'}</NaviText>
         <Input placeholder="설비번호 (선택)" />
@@ -26,9 +33,9 @@ export default ({navigation}) => {
           </TableTitleWrapper>
           <TableDataWrapper>
             <TableData>
-              <TableDataAssetName></TableDataAssetName>
-              <TableDataOrderNum></TableDataOrderNum>
-              <TableDataProductName></TableDataProductName>
+              <TableDataAssetName />
+              <TableDataOrderNum />
+              <TableDataProductName />
               <ChoicelBtn
                 onPress={() => {
                   navigation.navigate('register');

@@ -7,9 +7,13 @@ const api = axios.create({
 
 export const userApi = {
   login: async (loginData: ILogin) => {
-    const {data} = await api.post('/login/index.php', loginData);
+    try {
+      const {data} = await api.post('/login/index.php', loginData);
 
-    return data;
+      return data;
+    } catch (e) {
+      return e;
+    }
   },
 };
 
@@ -17,8 +21,26 @@ export const processApi = {
   restCheck: async (qr_id: number, token: string) => {
     api.defaults.headers.common.Authorization = token;
 
-    const {data} = await api.get(`/cosmetics/qr/rest/index.php?id=${qr_id}`);
+    try {
+      const {data} = await api.get(`/cosmetics/qr/rest/index.php?id=${qr_id}`);
 
-    return data;
+      return data;
+    } catch (e) {
+      return e;
+    }
+  },
+};
+
+export const master = {
+  defects: async (group_id: number, token: string) => {
+    api.defaults.headers.common.Authorization = token;
+
+    try {
+      const {data} = await api.get(`/defect/index.php?group_id=${group_id}`);
+
+      return data;
+    } catch (e) {
+      return e;
+    }
   },
 };
