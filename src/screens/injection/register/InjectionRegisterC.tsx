@@ -1,65 +1,82 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import Loading from '../../../components/Loading';
 import InjectionRegisterP from './InjectionRegisterP';
 import {INavigation} from '../../../components/types/navigation';
-import {master} from '../../../components/api';
-import UserContext from '../../../modules/UserContext';
+import {processApi} from '../../../components/api';
 import {IDefect} from '../../../components/types/defect';
 import {useDropDown} from '../../../modules/DropDownContext';
+import {IInjectionProcess} from '../../../components/types/process';
 
 interface IProps {
   navigation: INavigation;
+  route: {
+    params: IInjectionProcess;
+  };
 }
 
 export default (props: IProps) => {
-  const {user}: any = useContext(UserContext);
   const {ref}: any = useDropDown();
 
-  const [state, setState] = useState<Array<IDefect>>([]);
+  const [defects, setDefects] = useState<Array<IDefect>>([]);
   const [loading, setLoading] = useState(false);
+
+  const alertMessage = (type: string, title: string, message: string) => {
+    ref.current.alertWithType(type, title, message);
+  };
 
   const getDefects = async () => {
     setLoading(true);
-    const {data} = await master.defects(4, user.token);
-    const defects = data.map((item: IDefect) => {
-      item.qty = 0;
-      return item;
-    });
+    const {id} = props.route.params;
+    const {status, data, message} = await processApi.injectionDefect(id);
+    if (status !== 200) {
+      alertMessage('error', '데이터 조회 실패', message);
+      setLoading(false);
+      return;
+    }
 
-    setState(defects);
+    setDefects(data);
     setLoading(false);
   };
 
   const plusQty = async (defect: IDefect) => {
-    const newState = state.map((item) =>
-      defect.id === item.id ? {...item, qty: defect.qty + 1} : item,
-    );
-    setState(newState);
-    ref.current.alertWithType('info', '', '등록되었습니다.');
+    const newDefect = {...defect, qty: defect.qty + 1};
+    await registerDefect(newDefect);
   };
 
   const minusQty = async (defect: IDefect) => {
     if (defect.qty === 0) {
-      ref.current.alertWithType('error', '', '0보다 작을 수 없습니다.');
+      alertMessage('error', '', '0보다 작을 수 없습니다.');
       return;
     }
-    const newState = state.map((item) =>
-      defect.id === item.id ? {...item, qty: defect.qty - 1} : item,
-    );
-    setState(newState);
-    ref.current.alertWithType('info', '', '등록되었습니다.');
+
+    const newDefect = {...defect, qty: defect.qty - 1};
+    await registerDefect(newDefect);
   };
 
-  const changeQty = (defect: IDefect, qty: string) => {
-    const changeQty = parseInt(qty);
-    const newState = state.map((item) =>
-      defect.id === item.id ? {...item, qty: changeQty} : item,
+  const registerDefect = async (defect: IDefect) => {
+    const {id, order_id, product_id} = props.route.params;
+    const tmp = {
+      defect_id: defect.id,
+      qty: defect.qty,
+      process_order_id: id,
+      product_id,
+      order_id,
+    };
+    const {status, message} = await processApi.injectionRegister(tmp);
+    if (status !== 200) {
+      alertMessage('info', '불량등록 실패', message);
+      return;
+    }
+
+    const newDefects = defects.map((item) =>
+      defect.id === item.id ? defect : item,
     );
-    setState(newState);
+    setDefects(newDefects);
+    alertMessage('info', '', message);
   };
 
   const registerFinish = () => {
-    ref.current.alertWithType('info', '', '완료되었습니다.');
+    alertMessage('info', '', '완료되었습니다.');
     props.navigation.goBack();
   };
 
@@ -67,15 +84,14 @@ export default (props: IProps) => {
     getDefects();
   }, []);
 
-  return loading || !state ? (
+  return loading || !defects ? (
     <Loading />
   ) : (
     <InjectionRegisterP
       {...props}
-      state={state}
+      defects={defects}
       plusQty={plusQty}
       minusQty={minusQty}
-      changeQty={changeQty}
       registerFinish={registerFinish}
     />
   );

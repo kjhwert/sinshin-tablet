@@ -2,44 +2,51 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {INavigation} from '../../../components/types/navigation';
 import {IDefect} from '../../../components/types/defect';
-import KeepAwake from '@sayem314/react-native-keep-awake';
+import {IInjectionProcess} from '../../../components/types/process';
 
 interface IProps {
   navigation: INavigation;
-  state: Array<IDefect>;
+  defects: Array<IDefect>;
   plusQty: Function;
   minusQty: Function;
-  changeQty: Function;
   registerFinish: Function;
+  route: {
+    params: IInjectionProcess;
+  };
 }
 
-export default ({navigation, state, plusQty, minusQty, changeQty, registerFinish}: IProps) => {
+export default ({
+  defects,
+  plusQty,
+  minusQty,
+  registerFinish,
+  route: {params},
+}: IProps) => {
   return (
     <Container>
-      <KeepAwake />
       <ScrollContainer>
         <ScrollWrapper>
           <Card>
             <NaviText>{'사출 > 불량품 등록'}</NaviText>
             <TitleWrapper>
               <BoldText>수주번호</BoldText>
-              <Data>4502645072</Data>
+              <Data>{params.order_no}</Data>
             </TitleWrapper>
             <TitleWrapper>
               <BoldText>
                 원{'\t'}자{'\t'}재
               </BoldText>
-              <Data>ABS121HA-NP (R-IN-004) / 25kg</Data>
+              <Data>{`${params.material_name} / ${params.qty}${params.unit}`}</Data>
             </TitleWrapper>
             <TitleWrapper>
               <BoldText>
                 제{'\t'}품{'\t'}명
               </BoldText>
-              <Data>후 진율 밸런서/로션(18G) 150/110ml 캡 외캡</Data>
+              <Data>{params.product_name}</Data>
             </TitleWrapper>
             <TitleWrapper>
               <BoldText>설비번호</BoldText>
-              <Data>25</Data>
+              <Data>{params.asset_no}</Data>
             </TitleWrapper>
           </Card>
           <Card marginTop={20}>
@@ -50,7 +57,7 @@ export default ({navigation, state, plusQty, minusQty, changeQty, registerFinish
             </WarningText>
           </Card>
           <BoxWrapper>
-            {state.map((item: IDefect) => (
+            {defects.map((item: IDefect) => (
               <DefectWrapper key={item.id}>
                 <DefectBtn
                   onPress={() => {

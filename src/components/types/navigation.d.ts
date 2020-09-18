@@ -6,7 +6,8 @@ type RootStackParamList = {
   main: undefined;
   drawer: undefined;
   injection: undefined;
-  injectionRegister: undefined;
+  search: undefined;
+  register: undefined;
 };
 
 type MainScreenRouteProp = RouteProp<RootStackParamList, 'main'>;
