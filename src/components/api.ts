@@ -1,7 +1,12 @@
 import axios from 'axios';
 import {ILogin} from './types/user';
 import AsyncStorage from '@react-native-community/async-storage';
-import {IInjectionRegister, IInjectionSearchState} from './types/process';
+import {
+  IInjectionSearchState,
+  IInjectionRegister,
+  PaintingSearchState,
+  PaintingRegister,
+} from './types/process';
 
 const api = axios.create({
   baseURL: 'http://sinshin.hlabpartner.com/api',
@@ -31,7 +36,6 @@ export const userApi = {
   login: async (loginData: ILogin) => {
     try {
       const {data} = await api.post('/login/index.php', loginData);
-
       return data;
     } catch (e) {
       return e;
@@ -54,18 +58,27 @@ export const processApi = {
   injectionRegister: async (data: IInjectionRegister) => {
     return apiRequest(api.post('cosmetics/qr/defect/index.php', data));
   },
+  paintingSearch: async (state: PaintingSearchState) => {
+    const {order_no, product_name} = state;
+    const params = `type=tablet&order_no=${order_no}&product_name=${product_name}`;
+    return apiRequest(
+      api.get(`/cosmetics/painting/defect/index.php?${params}`),
+    );
+  },
+  paintingDefect: async (process_id: number) => {
+    return apiRequest(
+      api.get(
+        `/cosmetics/painting/defect/index.php?type=tablet&id=${process_id}`,
+      ),
+    );
+  },
+  paintingRegister: async (data: PaintingRegister) => {
+    return apiRequest(api.post('cosmetics/painting/defect/index.php', data));
+  },
 };
 
-export const master = {
-  defects: async (group_id: number, token: string) => {
-    api.defaults.headers.common.Authorization = token;
-
-    try {
-      const {data} = await api.get(`/defect/index.php?group_id=${group_id}`);
-
-      return data;
-    } catch (e) {
-      return e;
-    }
+export const masterApi = {
+  defects: (group_id: number, token: string) => {
+    return apiRequest(api.get(`/defect/index.php?group_id=${group_id}`));
   },
 };

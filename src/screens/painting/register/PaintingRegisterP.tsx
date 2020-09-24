@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {INavigation} from '../../../components/types/navigation';
 import {IDefect} from '../../../components/types/defect';
-import {IInjectionProcess} from '../../../components/types/process';
+import {PaintingProcess} from '../../../components/types/process';
 
 interface IProps {
   navigation: INavigation;
@@ -11,7 +11,7 @@ interface IProps {
   minusQty: Function;
   registerFinish: Function;
   route: {
-    params: IInjectionProcess;
+    params: PaintingProcess;
   };
 }
 
@@ -27,26 +27,16 @@ export default ({
       <ScrollContainer>
         <ScrollWrapper>
           <Card>
-            <NaviText>{'사출 > 불량품 등록'}</NaviText>
+            <NaviText>{'도장 > 불량품 등록'}</NaviText>
             <TitleWrapper>
               <BoldText>수주번호</BoldText>
               <Data>{params.order_no}</Data>
             </TitleWrapper>
             <TitleWrapper>
               <BoldText>
-                원{'\t'}자{'\t'}재
-              </BoldText>
-              <Data>{`${params.material_name} / ${params.qty}${params.unit}`}</Data>
-            </TitleWrapper>
-            <TitleWrapper>
-              <BoldText>
                 제{'\t'}품{'\t'}명
               </BoldText>
               <Data>{params.product_name}</Data>
-            </TitleWrapper>
-            <TitleWrapper>
-              <BoldText>설비번호</BoldText>
-              <Data>{params.asset_no}</Data>
             </TitleWrapper>
           </Card>
           <Card marginTop={20}>

@@ -1,45 +1,45 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import {INavigation} from '../../../components/types/navigation';
-import {
-  IInjectionProcess,
-  IInjectionSearchState,
-} from '../../../components/types/process';
 import Loading from '../../../components/Loading';
+import {
+  PaintingSearchState,
+  PaintingProcess,
+} from '../../../components/types/process';
 
 interface IProps {
   navigation: INavigation;
   getProcess: Function;
-  state: IInjectionSearchState;
-  setState: Function;
+  state: PaintingSearchState;
   loading: boolean;
-  processes: Array<IInjectionProcess>;
+  processes: Array<PaintingProcess>;
 }
 
 export default ({
   navigation,
   getProcess,
   state,
-  setState,
+  setOrderNo,
+  setProductName,
   processes,
   loading,
 }: IProps) => {
   return (
     <Container>
       <Card>
-        <NaviText>{'사출 > 작업정보 검색'}</NaviText>
+        <NaviText>{'도장 > 작업정보 검색'}</NaviText>
         <Input
           placeholder="수주번호 (검색)"
           value={state.order_no}
-          onChangeText={(t) => {
-            setState({...state, order_no: t});
+          onChangeText={(text) => {
+            setOrderNo(text);
           }}
         />
         <Input
           placeholder="제품명 (검색)"
           value={state.product_name}
-          onChangeText={(t) => {
-            setState({...state, product_name: t});
+          onChangeText={(text) => {
+            setProductName(text);
           }}
         />
         <SearchBtn
@@ -52,30 +52,28 @@ export default ({
       {loading ? (
         <Loading />
       ) : (
-        <Card marginTop={30} marginBottom={280}>
+        <Card marginTop={30}>
           <TableContainer>
             <TableTitleWrapper>
-              <TableHeader width={'20%'}>설비번호</TableHeader>
-              <TableHeader width={'20%'}>수주번호</TableHeader>
-              <TableHeader width={'45%'}>제품명</TableHeader>
-              <TableHeader width={'15%'}>선택버튼</TableHeader>
+              <OrderNumHeader>수주번호</OrderNumHeader>
+              <ProductNameHeader>제 품 명</ProductNameHeader>
+              <TypeNameHeader>유형</TypeNameHeader>
+              <ChoiceBtnHeader>선택버튼</ChoiceBtnHeader>
             </TableTitleWrapper>
             <TableDataWrapper>
-              {processes.map((item: IInjectionProcess) => (
+              {processes.map((item) => (
                 <TableData key={item.id}>
-                  <TableDataAssetName>{item.asset_no}</TableDataAssetName>
                   <TableDataOrderNum>{item.order_no}</TableDataOrderNum>
                   <TableDataProductName>
                     {item.product_name}
                   </TableDataProductName>
-                  <ChoiceBtnWrapper>
-                    <ChoicelBtn
-                      onPress={() => {
-                        navigation.navigate('injectionRegister', item);
-                      }}>
-                      <ChoicelBtnText>선택</ChoicelBtnText>
-                    </ChoicelBtn>
-                  </ChoiceBtnWrapper>
+                  <TableDataTypeName>{item.type}</TableDataTypeName>
+                  <ChoicelBtn
+                    onPress={() => {
+                      navigation.navigate('paintingRegister', item);
+                    }}>
+                    <ChoicelBtnText>선택</ChoicelBtnText>
+                  </ChoicelBtn>
                 </TableData>
               ))}
             </TableDataWrapper>
@@ -95,7 +93,6 @@ const Card = styled.View`
   background-color: white;
   padding: 20px;
   margin-top: ${({marginTop}) => (marginTop ? marginTop : 0)}px;
-  margin-bottom: ${({marginBottom}) => (marginBottom ? marginBottom : 0)}px;
   border-radius: 5px;
 `;
 
@@ -128,7 +125,7 @@ const SearchBtn = styled.TouchableOpacity`
 
 const SrchBtnText = styled.Text`
   color: #fff;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
 `;
 
@@ -146,59 +143,73 @@ const TableTitleWrapper = styled.View`
   border-color: #f4f5fa;
 `;
 
-const TableHeader = styled.Text`
+const OrderNumHeader = styled.Text`
   font-size: 20px;
   color: #6c6f7f;
-  width: ${({width}) => (width ? width : '25%')};
+  width: 20%;
   text-align: center;
 `;
 
-const TableDataWrapper = styled.View`
-  padding: 10px 0;
+const ProductNameHeader = styled.Text`
+  font-size: 20px;
+  color: #6c6f7f;
+  width: 40%;
+  text-align: center;
 `;
+
+const TypeNameHeader = styled.Text`
+  font-size: 20px;
+  color: #6c6f7f;
+  width: 15%;
+  text-align: center;
+`;
+
+const ChoiceBtnHeader = styled.Text`
+  font-size: 20px;
+  color: #6c6f7f;
+  width: 15%;
+  text-align: center;
+`;
+
+const TableDataWrapper = styled.View``;
 
 const TableData = styled.View`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-  padding: 10px 0;
-`;
-
-const TableDataAssetName = styled.Text`
-  color: #6c6f7f;
-  font-size: 18px;
-  width: 20%;
-  text-align: center;
+  padding: 10px;
 `;
 
 const TableDataOrderNum = styled.Text`
+  text-align: center;
   color: #6c6f7f;
   font-size: 18px;
   width: 20%;
-  text-align: center;
 `;
 
 const TableDataProductName = styled.Text`
   color: #6c6f7f;
   font-size: 18px;
-  width: 45%;
+  width: 40%;
+  flex-flow: wrap;
   text-align: center;
 `;
 
-const ChoiceBtnWrapper = styled.View`
-  display: flex;
-  align-items: center;
+const TableDataTypeName = styled.Text`
+  color: #6c6f7f;
+  font-size: 18px;
   width: 15%;
+  text-align: center;
 `;
 
 const ChoicelBtn = styled.TouchableOpacity`
   background-color: #6c2b96;
   padding: 5px 10px;
   border-radius: 5px;
+  width: 15%;
   align-items: center;
-  width: 70%;
 `;
 
 const ChoicelBtnText = styled.Text`

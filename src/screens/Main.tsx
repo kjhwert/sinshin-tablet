@@ -12,14 +12,14 @@ export default ({navigation}) => {
           color={injectionColor}
           marginRight={20}
           onPress={() => {
-            navigation.navigate('search');
+            navigation.navigate('injectionSearch');
           }}>
           <LinkText color={injectionColor}>사출</LinkText>
         </Link>
         <Link
           color={paintingColor}
           onPress={() => {
-            navigation.navigate('search');
+            navigation.navigate('paintingSearch');
           }}>
           <LinkText color={paintingColor}>도장</LinkText>
         </Link>

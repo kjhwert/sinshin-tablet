@@ -125,4 +125,5 @@ const HomeImage = styled.Image`
 const NText = styled.Text`
   color: #999999;
   font-weight: 500;
+  font-size: 18px;
 `;
