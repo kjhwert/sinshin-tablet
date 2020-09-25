@@ -1,50 +1,85 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import KeepAwake from '@sayem314/react-native-keep-awake';
 import {INavigation} from '../../../components/types/navigation';
+import Loading from '../../../components/Loading';
+import {
+  PaintingSearchState,
+  PaintingProcess,
+} from '../../../components/types/process';
 
 interface IProps {
   navigation: INavigation;
+  getProcess: Function;
+  state: PaintingSearchState;
+  loading: boolean;
+  processes: Array<PaintingProcess>;
 }
 
-export default ({navigation}: IProps) => {
+export default ({
+  navigation,
+  getProcess,
+  state,
+  setOrderNo,
+  setProductName,
+  processes,
+  loading,
+}: IProps) => {
   return (
     <Container>
-      <KeepAwake />
       <Card>
         <NaviText>{'도장 > 작업정보 검색'}</NaviText>
-        <Input placeholder="수주번호 (검색)" />
-        <Input placeholder="제품명 (검색)" />
+        <Input
+          placeholder="수주번호 (검색)"
+          value={state.order_no}
+          onChangeText={(text) => {
+            setOrderNo(text);
+          }}
+        />
+        <Input
+          placeholder="제 품 명 (검색)"
+          value={state.product_name}
+          onChangeText={(text) => {
+            setProductName(text);
+          }}
+        />
         <SearchBtn
           onPress={() => {
-            navigation.navigate('');
+            getProcess();
           }}>
-          <SrchBtnText>검색</SrchBtnText>
+          <SearchBtnText>검색</SearchBtnText>
         </SearchBtn>
       </Card>
-      <Card marginTop={30}>
-        <TableContainer>
-          <TableTitleWrapper>
-            <AssetNameHeader>설비번호</AssetNameHeader>
-            <OrderNumHeader>수주번호</OrderNumHeader>
-            <ProductNameHeader>제품명</ProductNameHeader>
-            <ChoiceBtnHeader>선택버튼</ChoiceBtnHeader>
-          </TableTitleWrapper>
-          <TableDataWrapper>
-            <TableData>
-              <TableDataAssetName />
-              <TableDataOrderNum />
-              <TableDataProductName />
-              <ChoicelBtn
-                onPress={() => {
-                  navigation.navigate('paintingRegister');
-                }}>
-                <ChoicelBtnText>선택</ChoicelBtnText>
-              </ChoicelBtn>
-            </TableData>
-          </TableDataWrapper>
-        </TableContainer>
-      </Card>
+      {loading ? (
+        <Loading />
+      ) : (
+        <Card marginTop={30}>
+          <TableContainer>
+            <TableTitleWrapper>
+              <OrderNumHeader>수주번호</OrderNumHeader>
+              <ProductNameHeader>제 품 명</ProductNameHeader>
+              <TypeNameHeader>유형</TypeNameHeader>
+              <ChoiceBtnHeader>선택버튼</ChoiceBtnHeader>
+            </TableTitleWrapper>
+            <TableDataWrapper>
+              {processes.map((item) => (
+                <TableData key={item.id}>
+                  <TableDataOrderNum>{item.order_no}</TableDataOrderNum>
+                  <TableDataProductName>
+                    {item.product_name}
+                  </TableDataProductName>
+                  <TableDataTypeName>{item.type}</TableDataTypeName>
+                  <ChoicelBtn
+                    onPress={() => {
+                      navigation.navigate('paintingRegister', item);
+                    }}>
+                    <ChoicelBtnText>선택</ChoicelBtnText>
+                  </ChoicelBtn>
+                </TableData>
+              ))}
+            </TableDataWrapper>
+          </TableContainer>
+        </Card>
+      )}
     </Container>
   );
 };
@@ -88,16 +123,14 @@ const SearchBtn = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const SrchBtnText = styled.Text`
+const SearchBtnText = styled.Text`
   color: #fff;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
 `;
 
 // 하단 테이블
-const TableContainer = styled.View`
-  width: 100%;
-`;
+const TableContainer = styled.ScrollView``;
 
 const TableTitleWrapper = styled.View`
   display: flex;
@@ -110,43 +143,43 @@ const TableTitleWrapper = styled.View`
   border-color: #f4f5fa;
 `;
 
-const AssetNameHeader = styled.Text`
-  font-size: 20px;
-  color: #6c6f7f;
-`;
-
 const OrderNumHeader = styled.Text`
   font-size: 20px;
   color: #6c6f7f;
+  width: 20%;
+  text-align: center;
 `;
 
 const ProductNameHeader = styled.Text`
   font-size: 20px;
   color: #6c6f7f;
+  width: 40%;
+  text-align: center;
+`;
+
+const TypeNameHeader = styled.Text`
+  font-size: 20px;
+  color: #6c6f7f;
+  width: 15%;
+  text-align: center;
 `;
 
 const ChoiceBtnHeader = styled.Text`
   font-size: 20px;
   color: #6c6f7f;
+  width: 15%;
+  text-align: center;
 `;
 
-const TableDataWrapper = styled.View`
-  padding: 10px;
-`;
+const TableDataWrapper = styled.View``;
 
 const TableData = styled.View`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
   padding: 10px;
-`;
-
-const TableDataAssetName = styled.Text`
-  color: #6c6f7f;
-  font-size: 18px;
-  width: 20%;
 `;
 
 const TableDataOrderNum = styled.Text`
@@ -161,13 +194,21 @@ const TableDataProductName = styled.Text`
   font-size: 18px;
   width: 40%;
   flex-flow: wrap;
+  text-align: center;
+`;
+
+const TableDataTypeName = styled.Text`
+  color: #6c6f7f;
+  font-size: 18px;
+  width: 15%;
+  text-align: center;
 `;
 
 const ChoicelBtn = styled.TouchableOpacity`
   background-color: #6c2b96;
   padding: 5px 10px;
   border-radius: 5px;
-  width: 10%;
+  width: 15%;
   align-items: center;
 `;
 

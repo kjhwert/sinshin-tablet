@@ -2,26 +2,26 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {INavigation} from '../../../components/types/navigation';
 import {IDefect} from '../../../components/types/defect';
+import {IInjectionProcess} from '../../../components/types/process';
 
 interface IProps {
   navigation: INavigation;
-  state: Array<IDefect>;
+  defects: Array<IDefect>;
   plusQty: Function;
   minusQty: Function;
-  changeQty: Function;
   registerFinish: Function;
+  route: {
+    params: IInjectionProcess;
+  };
 }
 
 export default ({
-  navigation,
-  state,
+  defects,
   plusQty,
   minusQty,
-  changeQty,
   registerFinish,
   route: {params},
 }: IProps) => {
-  console.log(params);
   return (
     <Container>
       <ScrollContainer>
@@ -52,12 +52,12 @@ export default ({
           <Card marginTop={20}>
             <WarningText>
               전체 불량품{'\t'}
-              <HighLightText>수량을 입력한 후, 등록버튼</HighLightText>을
+              <HighLightText>수량을 입력한 후, 공정완료 버튼</HighLightText>을
               눌러주세요.
             </WarningText>
           </Card>
           <BoxWrapper>
-            {state.map((item: IDefect) => (
+            {defects.map((item: IDefect) => (
               <DefectWrapper key={item.id}>
                 <DefectBtn
                   onPress={() => {

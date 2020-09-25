@@ -11,6 +11,9 @@ type RootStackParamList = {
   painting: undefined;
   paintingRegister: undefined;
   paintingSearch: undefined;
+  assemble: undefined;
+  assembleSearch: undefined;
+  assembleRegister: undefined;
 };
 
 type MainScreenRouteProp = RouteProp<RootStackParamList, 'main'>;

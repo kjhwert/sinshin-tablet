@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import PaintingRegisterP from './PaintingRegisterP';
+import AssembleRegisterP from './AssembleRegisterP';
 import {INavigation} from '../../../components/types/navigation';
 import {processApi} from '../../../components/api';
 import {IDefect} from '../../../components/types/defect';
@@ -85,7 +85,7 @@ export default (props: IProps) => {
   return loading || !defects ? (
     <Loading />
   ) : (
-    <PaintingRegisterP
+    <AssembleRegisterP
       {...props}
       defects={defects}
       plusQty={plusQty}

@@ -61,30 +61,31 @@ const Wrapper = styled.View`
 
 const LogoImage = styled.ImageBackground`
   width: 100%;
-  height: 40px;
-  margin-bottom: 20px;
+  height: 50px;
+  margin-bottom: 30px;
 `;
 
 const Input = styled.TextInput`
   width: 100%;
-  padding: 10px 15px;
+  padding: 15px;
   border-width: 1px;
   border-color: #babfc7;
   border-radius: 5px;
   margin-bottom: 15px;
+  font-size: 18px;
 `;
 
+// LOGIN 버튼
 const LoginBtn = styled.TouchableOpacity`
-  width: 100%;
   text-align: center;
   background-color: #6c2b96;
   border-radius: 5px;
-  margin-bottom: 40px;
+  padding: 20px;
+  align-items: center;
 `;
 
 const LoginBtnText = styled.Text`
-  color: white;
-  padding: 15px;
-  text-align: center;
+  color: #fff;
+  font-size: 20px;
   font-weight: bold;
 `;

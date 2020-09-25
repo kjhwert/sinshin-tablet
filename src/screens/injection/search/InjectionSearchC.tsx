@@ -1,51 +1,45 @@
 import React, {useState} from 'react';
-import {processApi} from '../../../components/api';
-import Loading from '../../../components/Loading';
-import {useDropDown} from '../../../modules/DropDownContext';
 import InjectionSearchP from './InjectionSearchP';
+import {processApi} from '../../../components/api';
+import {INavigation} from '../../../components/types/navigation';
+import {
+  IInjectionProcess,
+  IInjectionSearchState,
+} from '../../../components/types/process';
+import {useDropDown} from '../../../modules/DropDownContext';
 
-export default (props) => {
-  const {ref} = useDropDown();
-  const [state, setState] = useState({
+interface IProps {
+  navigation: INavigation;
+}
+
+export default (props: IProps) => {
+  const {ref}: any = useDropDown();
+  const [state, setState] = useState<IInjectionSearchState>({
     order_no: '',
     product_name: '',
-    type: 'tablet',
-    process_type: 'M',
   });
 
-  const [process, setProcess] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [processes, setProcesses] = useState<Array<IInjectionProcess>>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const setOrderNo = (text: string) => {
-    setState({...state, order_no: text});
-  };
-
-  const setProductName = (text: string) => {
-    setState({...state, product_name: text});
-  };
-
-  const getList = async () => {
+  const getProcess = async () => {
     setLoading(true);
-    const {data, status, message} = await processApi.injection(state);
+    const {status, data, message} = await processApi.injectionSearch(state);
     if (status !== 200) {
       ref.current.alertWithType('error', '데이터 조회 실패', message);
-      setLoading(false);
-      return;
     }
 
-    setProcess(data);
+    setProcesses(data);
     setLoading(false);
   };
 
   return (
     <InjectionSearchP
       {...props}
+      getProcess={getProcess}
       state={state}
       setState={setState}
-      getList={getList}
-      setOrderNo={setOrderNo}
-      setProductName={setProductName}
-      process={process}
+      processes={processes}
       loading={loading}
     />
   );

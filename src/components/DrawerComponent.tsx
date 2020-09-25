@@ -3,7 +3,6 @@ import styled from 'styled-components/native';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import {INavigation} from './types/navigation';
 import UserContext from '../modules/UserContext';
-import {Text} from 'react-native';
 
 interface IProps {
   navigation: INavigation;
@@ -19,16 +18,12 @@ export default (props: IProps) => {
   const initRoute = () => {
     if (!user) {
       return;
-    }
-    switch (user.dept_id) {
-      case injectionDeptId:
-        return 'injection';
-      case paintingDeptId:
-        return 'painting';
-      case assembleDeptId:
-        return 'assemble';
-      default:
-        return 'main';
+    } else if (
+      user.dept_id === injectionDeptId ||
+      paintingDeptId ||
+      assembleDeptId
+    ) {
+      return 'main';
     }
   };
   return (
@@ -39,42 +34,44 @@ export default (props: IProps) => {
           label={() => (
             <ProfileWrapper>
               <ProfileImage source={require('../assets/profile.png')} />
-              <Text style={{fontSize: 20, marginTop: 15}}>{user?.name}</Text>
-              <Text style={{color: '#666666', marginTop: 5}}>
-                {user?.dept_name}
-              </Text>
+              <ProfileNameText>{user?.name}</ProfileNameText>
+              <ProfileDeptNameText>{user?.dept_name}</ProfileDeptNameText>
             </ProfileWrapper>
           )}
-          style={{flex: 1, alignItems: 'center'}}
+          style={{flex: 1, alignItems: 'center', marginTop: 20}}
           onPress={() => {}}
         />
-        <DrawerItem
-          {...props}
-          label={() => (
-            <HomeWrapper>
-              <HomeImage source={require('../assets/home.png')} />
-              <NText>HOME</NText>
-            </HomeWrapper>
-          )}
-          style={{flex: 1}}
-          onPress={() => {
-            props.navigation.navigate(initRoute());
-          }}
-        />
-        <DrawerItem
-          {...props}
-          label={() => (
-            <LogoutWrapper>
-              <LogoutImage source={require('../assets/logout.png')} />
-              <NText>LOGOUT</NText>
-            </LogoutWrapper>
-          )}
-          style={{flex: 1}}
-          onPress={() => {
-            props.navigation.navigate('login');
-            userLogout();
-          }}
-        />
+        <Card>
+          <DrawerItem
+            {...props}
+            label={() => (
+              <HomeWrapper>
+                <HomeImage source={require('../assets/home.png')} />
+                <NText>HOME</NText>
+              </HomeWrapper>
+            )}
+            style={{flex: 1}}
+            onPress={() => {
+              props.navigation.navigate(initRoute());
+            }}
+          />
+        </Card>
+        <Card>
+          <DrawerItem
+            {...props}
+            label={() => (
+              <LogoutWrapper>
+                <LogoutImage source={require('../assets/logout.png')} />
+                <NText>LOGOUT</NText>
+              </LogoutWrapper>
+            )}
+            style={{flex: 1}}
+            onPress={() => {
+              props.navigation.navigate('login');
+              userLogout();
+            }}
+          />
+        </Card>
       </DrawerContentScrollView>
     </Container>
   );
@@ -89,11 +86,31 @@ const ProfileWrapper = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 30px 0px;
 `;
 
 const ProfileImage = styled.Image`
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
+`;
+
+const ProfileNameText = styled.Text`
+  font-weight: 500;
+  font-size: 25px;
+  margin-top: 15px;
+`;
+
+const ProfileDeptNameText = styled.Text`
+  font-size: 20px;
+  color: #666;
+  margin-top: 5px;
+`;
+
+const Card = styled.View`
+  background-color: #ffffff;
+  padding: 10px 0px;
+  border-bottom-width: 1px;
+  border-color: #f4f5fa;
 `;
 
 const LogoutWrapper = styled.View`
@@ -125,5 +142,5 @@ const HomeImage = styled.Image`
 const NText = styled.Text`
   color: #999999;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 22px;
 `;

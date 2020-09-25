@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import PaintingSearchP from './PaintingSearchP';
+import AssembleSearchP from './AssembleSearchP';
 import {processApi} from '../../../components/api';
 import {INavigation} from '../../../components/types/navigation';
 import Loading from '../../../components/Loading';
@@ -47,7 +47,7 @@ export default (props: IProps) => {
   };
 
   return (
-    <PaintingSearchP
+    <AssembleSearchP
       {...props}
       getProcess={getProcess}
       state={state}

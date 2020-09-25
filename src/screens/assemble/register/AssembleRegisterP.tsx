@@ -27,7 +27,7 @@ export default ({
       <ScrollContainer>
         <ScrollWrapper>
           <Card>
-            <NaviText>{'도장 > 불량품 등록'}</NaviText>
+            <NaviText>{'조립 > 불량품 등록'}</NaviText>
             <TitleWrapper>
               <BoldText>수주번호</BoldText>
               <Data>{params.order_no}</Data>

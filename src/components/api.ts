@@ -1,6 +1,12 @@
 import axios from 'axios';
 import {ILogin} from './types/user';
 import AsyncStorage from '@react-native-community/async-storage';
+import {
+  IInjectionSearchState,
+  IInjectionRegister,
+  PaintingSearchState,
+  PaintingRegister,
+} from './types/process';
 
 const api = axios.create({
   baseURL: 'http://sinshin.hlabpartner.com/api',
@@ -11,9 +17,8 @@ api.interceptors.request.use(async (config) => {
 
   if (user) {
     const {token} = JSON.parse(user);
-    config.headers.common.Authorization = token;
+    config.headers.Authorization = token;
   }
-
   return config;
 });
 
@@ -28,19 +33,46 @@ const apiRequest = async (request: Object) => {
 
 export const userApi = {
   login: async (loginData: ILogin) => {
-    const {data} = await api.post('/login/index.php', loginData);
-    return data;
+    try {
+      const {data} = await api.post('/login/index.php', loginData);
+      return data;
+    } catch (e) {
+      return e;
+    }
   },
 };
 
 export const processApi = {
-  injection: async (data) => {
-    const {order_no, product_name, type, process_type} = data;
+  injectionSearch: async (state: IInjectionSearchState) => {
+    const injectionProcessType = 'M';
+    const {order_no, product_name} = state;
+    const params = `type=tablet&order_no=${order_no}&product_name=${product_name}&process_type=${injectionProcessType}`;
+    return apiRequest(api.get(`/cosmetics/qr/defect/index.php?${params}`));
+  },
+  injectionDefect: async (process_id: number) => {
+    return apiRequest(
+      api.get(`/cosmetics/qr/defect/index.php?type=tablet&id=${process_id}`),
+    );
+  },
+  injectionRegister: async (data: IInjectionRegister) => {
+    return apiRequest(api.post('cosmetics/qr/defect/index.php', data));
+  },
+  paintingSearch: async (state: PaintingSearchState) => {
+    const {order_no, product_name} = state;
+    const params = `type=tablet&order_no=${order_no}&product_name=${product_name}`;
+    return apiRequest(
+      api.get(`/cosmetics/painting/defect/index.php?${params}`),
+    );
+  },
+  paintingDefect: async (process_id: number) => {
     return apiRequest(
       api.get(
-        `/cosmetics/qr/defect/index.php?order_no=${order_no}&product_name=${product_name}&type=${type}&process_type=${process_type}`,
+        `/cosmetics/painting/defect/index.php?type=tablet&id=${process_id}`,
       ),
     );
+  },
+  paintingRegister: async (data: PaintingRegister) => {
+    return apiRequest(api.post('cosmetics/painting/defect/index.php', data));
   },
 };
 
