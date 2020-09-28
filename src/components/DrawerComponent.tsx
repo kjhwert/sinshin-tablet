@@ -18,12 +18,16 @@ export default (props: IProps) => {
   const initRoute = () => {
     if (!user) {
       return;
-    } else if (
-      user.dept_id === injectionDeptId ||
-      paintingDeptId ||
-      assembleDeptId
-    ) {
-      return 'main';
+    }
+    switch (user.dept_id) {
+      case injectionDeptId:
+        return 'injectionSearch';
+      case paintingDeptId:
+        return 'paintingSearch';
+      case assembleDeptId:
+        return 'assembleSearch';
+      default:
+        return 'main';
     }
   };
   return (
