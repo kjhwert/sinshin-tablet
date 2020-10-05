@@ -13,6 +13,8 @@ interface IProps {
   state: PaintingSearchState;
   loading: boolean;
   processes: Array<PaintingProcess>;
+  setOrderNo: Function;
+  setProductName: Function;
 }
 
 export default ({

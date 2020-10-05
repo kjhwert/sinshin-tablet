@@ -38,6 +38,7 @@ export interface PaintingProcess {
   product_name: string;
   qty: number;
   unit: string;
+  type: string;
 }
 
 export interface PaintingRegister {

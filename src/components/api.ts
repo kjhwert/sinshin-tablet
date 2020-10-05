@@ -75,10 +75,27 @@ export const processApi = {
   paintingRegister: async (data: PaintingRegister) => {
     return apiRequest(api.post('cosmetics/painting/defect/index.php', data));
   },
+  assembleSearch: async (state: PaintingSearchState) => {
+    const {order_no, product_name} = state;
+    const params = `type=tablet&order_no=${order_no}&product_name=${product_name}`;
+    return apiRequest(
+      api.get(`/cosmetics/assemble/defect/index.php?${params}`),
+    );
+  },
+  assembleDefect: async (process_id: number) => {
+    return apiRequest(
+      api.get(
+        `/cosmetics/assemble/defect/index.php?type=tablet&id=${process_id}`,
+      ),
+    );
+  },
+  assembleRegister: async (data: PaintingRegister) => {
+    return apiRequest(api.post('cosmetics/assemble/defect/index.php', data));
+  },
 };
 
 export const masterApi = {
-  defects: (group_id: number, token: string) => {
+  defects: (group_id: number) => {
     return apiRequest(api.get(`/defect/index.php?group_id=${group_id}`));
   },
 };
