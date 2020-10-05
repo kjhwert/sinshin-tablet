@@ -27,7 +27,7 @@ export default ({
   return (
     <Container>
       <Card>
-        <NaviText>{'도장 > 작업정보 검색'}</NaviText>
+        <NaviText>{'조립 > 작업정보 검색'}</NaviText>
         <Input
           placeholder="수주번호 (검색)"
           value={state.order_no}
@@ -70,7 +70,7 @@ export default ({
                   <TableDataTypeName>{item.type}</TableDataTypeName>
                   <ChoicelBtn
                     onPress={() => {
-                      navigation.navigate('paintingRegister', item);
+                      navigation.navigate('assembleRegister', item);
                     }}>
                     <ChoicelBtnText>선택</ChoicelBtnText>
                   </ChoicelBtn>
