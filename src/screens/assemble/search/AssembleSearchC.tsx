@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import AssembleSearchP from './AssembleSearchP';
 import {processApi} from '../../../components/api';
 import {INavigation} from '../../../components/types/navigation';
-import Loading from '../../../components/Loading';
 import {
   PaintingSearchState,
   PaintingProcess,
@@ -36,7 +35,7 @@ export default (props: IProps) => {
 
   const getProcess = async () => {
     setLoading(true);
-    const {status, data, message} = await processApi.paintingSearch(state);
+    const {status, data, message} = await processApi.assembleSearch(state);
     if (status !== 200) {
       alertMessage('error', '데이터 조회 실패', message);
       setLoading(false);
@@ -51,7 +50,6 @@ export default (props: IProps) => {
       {...props}
       getProcess={getProcess}
       state={state}
-      setState={setState}
       setOrderNo={setOrderNo}
       setProductName={setProductName}
       processes={processes}

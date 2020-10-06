@@ -4,7 +4,7 @@ import {INavigation} from '../../../components/types/navigation';
 import Loading from '../../../components/Loading';
 import {
   PaintingSearchState,
-  PaintingProcess,
+  AssembleOrder,
 } from '../../../components/types/process';
 
 interface IProps {
@@ -12,7 +12,9 @@ interface IProps {
   getProcess: Function;
   state: PaintingSearchState;
   loading: boolean;
-  processes: Array<PaintingProcess>;
+  processes: Array<AssembleOrder>;
+  setOrderNo: Function;
+  setProductName: Function;
 }
 
 export default ({

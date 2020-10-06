@@ -33,10 +33,12 @@ export default ({
               <Data>{params.order_no}</Data>
             </TitleWrapper>
             <TitleWrapper>
-              <BoldText>
-                제{'\t'}품{'\t'}명
-              </BoldText>
+              <BoldText>{`제 품 명`}</BoldText>
               <Data>{params.product_name}</Data>
+            </TitleWrapper>
+            <TitleWrapper>
+              <BoldText>{`발주번호`}</BoldText>
+              <Data>{params.process_code}</Data>
             </TitleWrapper>
           </Card>
           <Card marginTop={20}>

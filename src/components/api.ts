@@ -6,6 +6,7 @@ import {
   IInjectionRegister,
   PaintingSearchState,
   PaintingRegister,
+  AssembleRegister,
 } from './types/process';
 
 const api = axios.create({
@@ -65,10 +66,10 @@ export const processApi = {
       api.get(`/cosmetics/painting/defect/index.php?${params}`),
     );
   },
-  paintingDefect: async (process_id: number) => {
+  paintingDefect: async (order_id: number) => {
     return apiRequest(
       api.get(
-        `/cosmetics/painting/defect/index.php?type=tablet&id=${process_id}`,
+        `/cosmetics/painting/defect/index.php?type=tablet&id=${order_id}`,
       ),
     );
   },
@@ -89,7 +90,7 @@ export const processApi = {
       ),
     );
   },
-  assembleRegister: async (data: PaintingRegister) => {
+  assembleRegister: async (data: AssembleRegister) => {
     return apiRequest(api.post('cosmetics/assemble/defect/index.php', data));
   },
 };

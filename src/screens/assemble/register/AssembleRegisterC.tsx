@@ -27,7 +27,7 @@ export default (props: IProps) => {
   const getDefects = async () => {
     setLoading(true);
     const {id} = props.route.params;
-    const {status, data, message} = await processApi.paintingDefect(id);
+    const {status, data, message} = await processApi.assembleDefect(id);
     if (status !== 200) {
       alertMessage('error', '데이터 조회 실패', message);
       setLoading(false);
@@ -52,7 +52,7 @@ export default (props: IProps) => {
   };
 
   const registerDefect = async (defect: IDefect) => {
-    const {id, order_id, product_id} = props.route.params;
+    const {order_id, product_id, id} = props.route.params;
     const tmp = {
       defect_id: defect.id,
       qty: defect.qty,
@@ -60,9 +60,9 @@ export default (props: IProps) => {
       product_id,
       order_id,
     };
-    const {status, message} = await processApi.paintingRegister(tmp);
+    const {status, message} = await processApi.assembleRegister(tmp);
     if (status !== 200) {
-      alertMessage('info', '불량등록 실패', message);
+      alertMessage('error', '불량등록 실패', message);
       return;
     }
 
