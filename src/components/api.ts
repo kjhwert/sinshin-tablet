@@ -10,7 +10,7 @@ import {
 } from './types/process';
 
 const api = axios.create({
-  baseURL: 'http://sinshin.hlabpartner.com/api',
+  baseURL: 'http://14.38.203.30/api',
 });
 
 api.interceptors.request.use(async (config) => {

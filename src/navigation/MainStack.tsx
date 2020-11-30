@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Main from '../screens/Main';
 import InjectionSearchC from '../screens/injection/search/InjectionSearchC';
@@ -10,6 +10,8 @@ import AssembleRegisterC from '../screens/assemble/register/AssembleRegisterC';
 import styled from 'styled-components/native';
 import {INavigation} from '../components/types/navigation';
 import Menu from '../components/Menu';
+import UserContext from '../modules/UserContext';
+import Loading from '../components/Loading';
 
 const Stack = createStackNavigator();
 
@@ -17,9 +19,32 @@ interface IProps {
   navigation: INavigation;
 }
 
+const injectionDeptId = 6;
+const paintingDeptId = 4;
+const assembleDeptId = 5;
+
 export default ({navigation}: IProps) => {
-  return (
+  const {user}: any = useContext(UserContext);
+
+  const initRoute = () => {
+    if (!user) {
+      return '';
+    }
+    switch (user.dept_id) {
+      case injectionDeptId:
+        return 'injectionSearch';
+      case paintingDeptId:
+        return 'paintingSearch';
+      case assembleDeptId:
+        return 'assembleSearch';
+      default:
+        return 'main';
+    }
+  };
+
+  return user ? (
     <Stack.Navigator
+      initialRouteName={initRoute()}
       screenOptions={{
         headerBackTitleVisible: false,
         headerTintColor: 'black',
@@ -39,6 +64,8 @@ export default ({navigation}: IProps) => {
       <Stack.Screen name="assembleSearch" component={AssembleSearchC} />
       <Stack.Screen name="assembleRegister" component={AssembleRegisterC} />
     </Stack.Navigator>
+  ) : (
+    <Loading />
   );
 };
 
